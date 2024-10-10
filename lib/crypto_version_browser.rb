@@ -1,11 +1,21 @@
 require 'nokogiri'
 require 'open-uri'
-
+require 'watir'
+require 'watir-scroll'
 
 
 
 def main
-    document = Nokogiri::HTML(URI.open("https://coinmarketcap.com/all/views/all/"))
+
+    browser = Watir::Browser.new
+    browser.goto "https://coinmarketcap.com/all/views/all/"
+    browser.execute_script("window.scrollBy(0, 2000)")
+    browser.execute_script("window.scrollBy(0, 2000)")
+    browser.execute_script("window.scrollBy(0, 2000)")
+    browser.execute_script("window.scrollBy(0, 2000)")
+    browser.execute_script("window.scrollBy(0, 2000)")
+    
+    document = Nokogiri::HTML.parse(browser.html)
 
     puts "document récupéré\n\n"
 
@@ -19,7 +29,7 @@ def main
     crypto_symbols = crypto_symbols.map {|element| element.content} 
     crypto_prices = crypto_prices.map {|element| element.content.gsub(/[,$]/, '').to_f}
 
-
+    puts crypto_prices.length
 
     final_array = []
 
@@ -29,3 +39,5 @@ def main
 
     return final_array
 end
+
+puts main()
